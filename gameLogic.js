@@ -16,7 +16,6 @@ export function handleClick(q, r) {
     if (state.selected) {
         if (isLegalMove(state.selected, { q, r })) {
         movePiece(state.selected, { q, r });
-        endTurn();
         } else {
         state.selected = null;
         }
@@ -97,6 +96,7 @@ function movePiece(from, to) {
         state.pieces[keyTo] = state.pieces[keyFrom]; // This wipes out any piece already there
         delete state.pieces[keyFrom];
         state.selected = null;
+        endTurn();
         render();
     }, 300); // match CSS transition duration
 }
@@ -111,29 +111,26 @@ function pieceTaken(keyTo) {
   
 
 function endTurn() {
-    checkWin()
-    state.currentPlayer = state.currentPlayer === 'P1' ? 'P2' : 'P1';
-    document.getElementById("game_title").textContent = `${state.currentPlayer}'s turn`
-}
-
-// Checks if the current player has won
-function checkWin() {
-
+    // Check if the current player has won
     // Check if 3 bays occupied
     var baycount = 0 // If +/-3, a winner
-    const isleWinCount = 3;
+    const isleWinCount = 1;
+    const pieceCoords = Object.keys(state.pieces);
     for (const bay of boardConfig.bays) {
         const bayKey = `${bay.q},${bay.r}`;
-        if (bayKey in state.pieces) {
+        if (pieceCoords.includes(bayKey)) {
             if (state.pieces[bayKey].owner === "P1") baycount += 1;
             else if (state.pieces[bayKey].owner === "P2") baycount -= 1;
         }
     }
+
     if (baycount >= isleWinCount) {
         endGame("P1");
+        return;
     }
     else if (baycount <= -isleWinCount) {
         endGame("P2");
+        return;
     }
 
     // Check if one side wiped out
@@ -143,16 +140,22 @@ function checkWin() {
     }
     if (!owners.has("P1")) {
         endGame("P2");
+        return;
     }
     else if (!owners.has("P2")) {
         endGame("P1");
+        return;
     }
+
+    state.currentPlayer = state.currentPlayer === 'P1' ? 'P2' : 'P1';
+    document.getElementById("game_title").textContent = `${state.currentPlayer}'s turn`
 }
 
 
 // Triggered on game end
 function endGame(winner) {
     document.getElementById("game_title").textContent = `${winner} won!`;
+    console.log("Game Over")
     // TODO: Offer new game
 }
 
