@@ -1,6 +1,4 @@
 ## TODO
-- Make nice (rules write-up etc)
-- Get hosted on GH
 - Better piece art
 - Highlighted potential moves on select
 - Make size variable

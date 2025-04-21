@@ -76,6 +76,11 @@ function movePiece(from, to) {
   
     const movingPiece = document.querySelector(`.piece[data-key="${keyFrom}"]`);
     if (!movingPiece) return;
+
+    // If piece is taken, handle that
+    if (state.pieces[keyTo]) {
+        pieceTaken(keyTo);
+    }
   
     const s = -to.q - to.r;
     const { x, y } = cubeToPixel(to.q, to.r, true);
@@ -89,12 +94,20 @@ function movePiece(from, to) {
   
     // Wait for animation to complete, then update state
     setTimeout(() => {
-      state.pieces[keyTo] = state.pieces[keyFrom];
-      delete state.pieces[keyFrom];
-      state.selected = null;
-      render();
+        state.pieces[keyTo] = state.pieces[keyFrom]; // This wipes out any piece already there
+        delete state.pieces[keyFrom];
+        state.selected = null;
+        render();
     }, 300); // match CSS transition duration
-  }
+}
+
+// Handles if a piece has been taken (doesn't need to delete it)
+function pieceTaken(keyTo) {
+    const pieceList = document.getElementById(`${state.currentPlayer}_pieces`)
+    const pieceString = pieceList.textContent.toString();
+    const takenToken = boardConfig.shipSymbols[state.pieces[keyTo].type];
+    pieceList.innerHTML = pieceString.replace(takenToken,"-");
+}
   
 
 function endTurn() {
