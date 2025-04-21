@@ -2,9 +2,10 @@ import { boardConfig } from './boardconfig.js'
 
 
 export function cubeToPixel(q, r, s) {
-    const size = 60 * 2/3;
-    const x = size * Math.sqrt(3) * q + (r % 2) * (Math.sqrt(3) / 2) * size;
-    const y = size * 1.5 * r;
+    const size = 36; // TODO: Pull out to reference elsewhere
+    const boardMargin = 10; // Pixel margin before closest hex
+    const x = size * Math.sqrt(3) * q + (r % 2) * (Math.sqrt(3) / 2) * size + boardMargin;
+    const y = size * 1.5 * r + boardMargin - Math.floor(r/2);
     return { x, y };
 }
   
@@ -44,6 +45,10 @@ export function createBoard(container, onClick) {
         container.appendChild(div);
         }
     }
+
+    // Shrink board to fit
+    container.style.width = `${54 * (gridSize + 1.5) + 20}px`;
+    container.style.height = `${54 * gridSize + 10}px`;
 }
   
   

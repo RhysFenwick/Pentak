@@ -1,8 +1,9 @@
 ## TODO
 - Make nice (rules write-up etc)
-- Get on GH (and therefore hosted)
+- Get hosted on GH
 - Better piece art
 - Highlighted potential moves on select
+- Make size variable
 
 ## Rules as coded
 - Sloop can move 2, brig 1, frigate 5; can't jump pieces or islands

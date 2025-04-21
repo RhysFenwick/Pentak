@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 1rem;
     font-family: sans-serif;
-    background: #000;
+    background: lightcyan;
   }
   
   h1 {
@@ -13,7 +13,10 @@ body {
     position: relative;
     width: 1000px;
     height: 800px;
-    margin: 0 auto;
+    margin: 10px;
+    background-color: saddlebrown;
+    padding: 10px;
+    border: 10px solid slategrey;
   }
   
   .hex {
@@ -40,6 +43,6 @@ body {
   }
   
   .hex:hover {
-    transform: scale(1.1);
+    filter: brightness(1.2);
   }
   

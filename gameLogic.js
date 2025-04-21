@@ -138,11 +138,11 @@ export function initPieces() {
         { q: 8, r: 0, type: 'Sloop' }
     ];
     for (const { q, r, type } of p1Start) {
-        state.pieces[`${q},${r}`] = { type, owner: 'P1' };
+        state.pieces[`${q},${r}`] = { type, owner: 'P2' };
     }
     for (const { q, r, type } of p1Start) {
         const newR = 8 - r, newQ = 4-q;
-        state.pieces[`${newQ},${newR}`] = { type, owner: 'P2' };
+        state.pieces[`${newQ},${newR}`] = { type, owner: 'P1' };
     }
 
     console.log(state)

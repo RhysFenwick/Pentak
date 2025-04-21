@@ -9,6 +9,6 @@ export function render() {
         hex.innerHTML = piece ? boardConfig.shipSymbols[piece.type] : '';
         hex.style.background = piece
         ? (piece.owner === 'P1' ? 'navy' : 'maroon')
-        : isIsland(key) ? 'sienna' : isBay(key) ? 'aqua' : 'lightblue';
+        : isIsland(key) ? 'darkgreen' : isBay(key) ? 'lightseagreen' : 'dodgerblue';
     });
 }
