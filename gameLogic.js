@@ -1,4 +1,4 @@
-import { isIsland } from './grid.js';
+import { isIsland, cubeToPixel } from './grid.js';
 import { render } from './ui.js';
 import { boardConfig } from './boardconfig.js'
 
@@ -73,15 +73,34 @@ function clearLine(from, to) {
 function movePiece(from, to) {
     const keyFrom = `${from.q},${from.r}`;
     const keyTo = `${to.q},${to.r}`;
-    state.pieces[keyTo] = state.pieces[keyFrom];
-    delete state.pieces[keyFrom];
-    state.selected = null;
-    render();
-}
+  
+    const movingPiece = document.querySelector(`.piece[data-key="${keyFrom}"]`);
+    if (!movingPiece) return;
+  
+    const s = -to.q - to.r;
+    const { x, y } = cubeToPixel(to.q, to.r, true);
+  
+    // Update dataset so render() doesn't overwrite mid-move
+    movingPiece.dataset.key = keyTo;
+  
+    // Animate with CSS transition
+    movingPiece.style.left = `${x}px`;
+    movingPiece.style.top = `${y}px`;
+  
+    // Wait for animation to complete, then update state
+    setTimeout(() => {
+      state.pieces[keyTo] = state.pieces[keyFrom];
+      delete state.pieces[keyFrom];
+      state.selected = null;
+      render();
+    }, 300); // match CSS transition duration
+  }
+  
 
 function endTurn() {
     checkWin()
     state.currentPlayer = state.currentPlayer === 'P1' ? 'P2' : 'P1';
+    document.getElementById("game_title").textContent = `${state.currentPlayer}'s turn`
 }
 
 // Checks if the current player has won
@@ -120,7 +139,8 @@ function checkWin() {
 
 // Triggered on game end
 function endGame(winner) {
-    console.log(`${winner} won!`);
+    document.getElementById("game_title").textContent = `${winner} won!`;
+    // TODO: Offer new game
 }
 
 

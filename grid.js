@@ -1,11 +1,16 @@
 import { boardConfig } from './boardconfig.js'
 
 
-export function cubeToPixel(q, r, s) {
+export function cubeToPixel(q, r, isPiece) {
     const size = 36; // TODO: Pull out to reference elsewhere
     const boardMargin = 10; // Pixel margin before closest hex
-    const x = size * Math.sqrt(3) * q + (r % 2) * (Math.sqrt(3) / 2) * size + boardMargin;
-    const y = size * 1.5 * r + boardMargin - Math.floor(r/2);
+    const infoMargin = 30; // Height of info at the top
+    let x = size * (Math.sqrt(3) * q + r * (Math.sqrt(3) / 2)) + boardMargin;
+    let y = size * 1.5 * r + boardMargin + infoMargin - Math.floor(r/2)- Math.floor(r/7) + Math.min(1,Math.max(0,1-r)); // Monstrosity at the end to compensate for weird pixel effects
+    if (isPiece) {
+        x += size/6;
+        y += size/4;
+    };
     return { x, y };
 }
   
@@ -23,7 +28,6 @@ export function isBay(key) {
   
 export function createBoard(container, onClick) {
     const gridSize = boardConfig.size;
-    container.innerHTML = '';
     for (let r = 0; r < gridSize; r++) {
         for (let col = 0; col < gridSize; col++) {
         const q = col - ((r - (r & 1)) / 2); // axial q
@@ -33,7 +37,7 @@ export function createBoard(container, onClick) {
         const div = document.createElement('div');
         div.className = 'hex';
 
-        const { x, y } = cubeToPixel(col, r,s);
+        const { x, y } = cubeToPixel(q, r, false);
         div.style.left = `${x}px`;
         div.style.top = `${y}px`;
 
@@ -47,8 +51,8 @@ export function createBoard(container, onClick) {
     }
 
     // Shrink board to fit
-    container.style.width = `${54 * (gridSize + 1.5) + 20}px`;
-    container.style.height = `${54 * gridSize + 10}px`;
+    container.style.width = `${54 * (gridSize + 1.5) + 40}px`;
+    container.style.height = `${54 * gridSize + 30 + 30}px`;
 }
   
   

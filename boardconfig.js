@@ -25,9 +25,9 @@ export const boardConfig = {
     ],
 
     shipSymbols: {
-        "Frigate":"&#9819",
-        "Sloop":"&#9823",
-        "Brig":"&#9820"
+        "Frigate":"&#9956", // Star
+        "Sloop":"&#9884", // Fleur-de-lis
+        "Brig":"&#9876" // Crossed swords
     }
   };
   

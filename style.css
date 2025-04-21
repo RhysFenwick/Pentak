@@ -3,33 +3,35 @@ body {
     padding: 1rem;
     font-family: sans-serif;
     background: lightcyan;
-  }
+    display: flex;
+    font-family: "MedievalSharp", cursive;
+}
   
-  h1 {
+h1 {
     text-align: center;
-  }
-  
-  #board {
+    margin: 5px;
+}
+
+#board {
     position: relative;
     width: 1000px;
     height: 800px;
     margin: 10px;
     background-color: saddlebrown;
-    padding: 10px;
     border: 10px solid slategrey;
-  }
-  
-  .hex {
+}
+
+.hex {
     width: 60px;
     height: 69px; /* ≈ sqrt(3)/2 * width * 2 */
     background: lightblue;
     clip-path: polygon(
-      50% 0%,
-      100% 25%,
-      100% 75%,
-      50% 100%,
-      0% 75%,
-      0% 25%
+        50% 0%,
+        100% 25%,
+        100% 75%,
+        50% 100%,
+        0% 75%,
+        0% 25%
     );
     position: absolute;
     cursor: pointer;
@@ -40,9 +42,26 @@ body {
     color: white;
     user-select: none;
     transition: transform 0.1s;
-  }
-  
-  .hex:hover {
+}
+
+.hex:hover {
     filter: brightness(1.2);
-  }
-  
+}
+
+.piece {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    transition: left 0.3s ease, top 0.3s ease;
+    color: white;
+    pointer-events: none;
+}
+
+#rules {
+    max-width: 25%;
+    text-align: center;
+}

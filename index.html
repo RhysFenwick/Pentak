@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pentak</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pentak</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=MedievalSharp&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
 </head>
 <body>
-  <div id="board"></div>
-  <div id="game info"></div>
+  <div id="board">
+    <div id="game_info">
+      <h1 id="game_title">P1's turn</h1>
+    </div>
+  </div>
   <div id="rules">
     <h2>Pentak</h2>
-    <p>Popular among the sailors of Lhazaar, this game represents a naval battle between two fleets for control of an island chain.</p>
+    <p>
+        Popular among the sailors of Lhazaar, this game represents a naval battle between two fleets for control of an island chain.
+    </p>
+    <h4>Rules</h4>
+    <p>
+        Each player takes it in turn to move a piece. You can't move onto or over islands (dark green), or through other ships (even your own). Move onto your opponent's ships to sink them.
+    </p>
+    <p>
+        There are three ship types:
+        <br>&#9956 Flagship - Fast and powerful. Moves up to five hexes in a line.
+        <br>&#9876 Brig - Slow but strong. Moves one hex, but can't be sunk by a sloop.
+        <br>&#9884 Sloop - All-rounder. Moves up to two hexes in a line.
+
+    </p>
+    <p>
+      You can win one of two ways:
+      <br>1. Wiping out your opponent's fleet, or
+      <br>2. Having ships in 3 of the 4 island bays (light green) while your opponent has none.
+    </p>
   </div>
 
   <script type="module" src="main.js"></script>
