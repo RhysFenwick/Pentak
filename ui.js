@@ -13,7 +13,7 @@ export function render() {
   
       const el = document.createElement('div');
       el.className = 'piece';
-      el.innerHTML = boardConfig.shipSymbols[piece.type];
+      el.innerHTML = boardConfig.shipTypes[piece.type].symbol;
       el.style.textAlign = "center";
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;

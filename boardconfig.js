@@ -24,10 +24,19 @@ export const boardConfig = {
       { player: 2, type: 'sloop', q: 8, r: 7 },
     ],
 
-    shipSymbols: {
-        "Frigate":"⛤", // Star
-        "Sloop":"⚜", // Fleur-de-lis
-        "Brig":"⚔" // Crossed swords
+    shipTypes: {
+      "Frigate": {
+        "symbol":"⛤",
+        "moves":5
+      },
+      "Brig": {
+        "symbol":"⚔",
+        "moves":1
+      },
+      "Sloop": {
+        "symbol":"⚜",
+        "moves":2
+      }
     }
   };
   

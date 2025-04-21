@@ -13,14 +13,45 @@ export function handleClick(q, r) {
     const key = `${q},${r}`;
     const piece = state.pieces[key];
 
-    if (state.selected) {
-        if (isLegalMove(state.selected, { q, r })) {
-        movePiece(state.selected, { q, r });
-        } else {
-        state.selected = null;
+    if (piece && piece.owner === state.currentPlayer) { // If clicking on your own piece, it's selected now
+
+        if (state.selected) { // De-highlight previously selected piece if there is one
+            pieceHighlight(state.selected,false);
         }
-    } else if (piece && piece.owner === state.currentPlayer) {
-        state.selected = { q, r };
+        
+        state.selected = { q, r }; // Make clicked-on piece the new selected one
+        // Highlight newly selected piece
+        pieceHighlight(state.selected);
+    }
+
+    else if (state.selected) { // If there's already a piece selected, check if you've clicked on a legal move
+        if (isLegalMove(state.selected, { q, r })) {
+            movePiece(state.selected, { q, r });
+        } else {
+            pieceHighlight(state.selected,false);
+            state.selected = null; // Deselect
+        }
+    } 
+}
+
+// Get the actual DOM element
+function getPieceFromKey(key) {
+    // Hacky overloading - either pass a string or an object that needs converting into a string
+    if (typeof key === "string") {
+        return document.querySelector(`.piece[data-key="${key}"]`);
+    }
+    else {
+        return document.querySelector(`.piece[data-key="${key.q},${key.r}"]`);
+    }
+}
+
+// Highlights or de-highlights the actual DOM element of a piece
+function pieceHighlight (key, turnOn=true) {
+    if (turnOn) {
+        getPieceFromKey(state.selected).style.filter = "brightness(1.5)";
+    }
+    else {
+        getPieceFromKey(state.selected).style.filter = "brightness(1)";
     }
 }
 
@@ -38,14 +69,18 @@ function isLegalMove(from, to) {
 
     switch (piece.type) {
         case 'Sloop':
-            return isStraightLine(dq, dr) && distance(dq, dr) <= 2 && dest?.type != 'Brig';
+            return isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Sloop') && dest?.type != 'Brig';
         case 'Brig':
-            return distance(dq, dr) === 1;
+            return distance(dq, dr) === shipRange('Brig');
         case 'Frigate':
-            return isStraightLine(dq, dr) && distance(dq, dr) <= 5;
+            return isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Frigate');
         default:
             return false;
     }
+}
+
+function shipRange(type) {
+    return boardConfig.shipTypes[type].moves
 }
 
 function distance(dq, dr) {
@@ -73,7 +108,7 @@ function movePiece(from, to) {
     const keyFrom = `${from.q},${from.r}`;
     const keyTo = `${to.q},${to.r}`;
   
-    const movingPiece = document.querySelector(`.piece[data-key="${keyFrom}"]`);
+    const movingPiece = getPieceFromKey(keyFrom);
     if (!movingPiece) return;
 
     // If piece is taken, handle that
@@ -105,7 +140,7 @@ function movePiece(from, to) {
 function pieceTaken(keyTo) {
     const pieceList = document.getElementById(`${state.currentPlayer}_pieces`)
     const pieceString = pieceList.textContent.toString();
-    const takenToken = boardConfig.shipSymbols[state.pieces[keyTo].type];
+    const takenToken = boardConfig.shipTypes[state.pieces[keyTo].type].symbol;
     pieceList.innerHTML = pieceString.replace(takenToken,"-");
 }
   
