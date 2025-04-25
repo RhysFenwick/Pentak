@@ -1,5 +1,9 @@
 import { boardConfig } from './boardconfig.js'
 
+// This file is meant to hold the creation of the grid (including initial physical rendering)
+
+export const hexes = []; // Will fill up with {q,r} of all hexes on the board
+
 
 export function cubeToPixel(q, r, isPiece) {
     const size = 36; // TODO: Pull out to reference elsewhere
@@ -14,39 +18,30 @@ export function cubeToPixel(q, r, isPiece) {
     return { x, y };
 }
   
-function getKey(q, r) {
-    return `${q},${r}`;
-}
-
-export function isIsland(key) {
-    return boardConfig.islands.some(pos => getKey(pos.q, pos.r) === key);
-}
-  
-export function isBay(key) {
-    return boardConfig.bays.some(pos => getKey(pos.q, pos.r) === key);
-}
-  
 export function createBoard(container, onClick) {
     const gridSize = boardConfig.size;
     for (let r = 0; r < gridSize; r++) {
         for (let col = 0; col < gridSize; col++) {
-        const q = col - ((r - (r & 1)) / 2); // axial q
-        const s = -q - r; // cube s
-        const key = `${q},${r}`;
-
-        const div = document.createElement('div');
-        div.className = 'hex';
-
-        const { x, y } = cubeToPixel(q, r, false);
-        div.style.left = `${x}px`;
-        div.style.top = `${y}px`;
-
-        div.dataset.q = q;
-        div.dataset.r = r;
-        div.dataset.s = s;
-
-        div.onclick = () => onClick(q, r, s);
-        container.appendChild(div);
+            if (r%2 === 0  || col != gridSize - 1) { // Making the grid pinch in every second row to add symmetry
+                const q = col - ((r - (r & 1)) / 2); // axial q
+                const s = -q - r; // cube s
+        
+                const div = document.createElement('div');
+                div.className = 'hex';
+        
+                const { x, y } = cubeToPixel(q, r, false);
+                div.style.left = `${x}px`;
+                div.style.top = `${y}px`;
+        
+                div.dataset.q = q;
+                div.dataset.r = r;
+                div.dataset.s = s;
+        
+                div.onclick = () => onClick(q, r, s);
+                container.appendChild(div);
+                hexes.push({q,r});
+            }
+        
         }
     }
 

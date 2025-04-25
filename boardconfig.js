@@ -1,3 +1,5 @@
+// Literally just a JSON that I've kept as a .JS in case I want to add any functions later
+
 export const boardConfig = {
     size: 9,
   
@@ -15,14 +17,16 @@ export const boardConfig = {
     ],
   
     initialShips: [
-      { player: 1, type: 'brig', q: 0, r: 0 },
-      { player: 1, type: 'sloop', q: 1, r: 0 },
-      { player: 1, type: 'sloop', q: 0, r: 1 },
-  
-      { player: 2, type: 'brig', q: 8, r: 8 },
-      { player: 2, type: 'sloop', q: 7, r: 8 },
-      { player: 2, type: 'sloop', q: 8, r: 7 },
-    ],
+      { q: 0, r: 0, type: 'Sloop' },
+      { q: 1, r: 0, type: 'Brig' },
+      { q: 2, r: 0, type: 'Sloop' },
+      { q: 3, r: 0, type: 'Brig' },
+      { q: 4, r: 0, type: 'Frigate' },
+      { q: 5, r: 0, type: 'Brig' },
+      { q: 6, r: 0, type: 'Sloop' },
+      { q: 7, r: 0, type: 'Brig' },
+      { q: 8, r: 0, type: 'Sloop' }
+  ],
 
     shipTypes: {
       "Frigate": {

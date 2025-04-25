@@ -1,6 +1,7 @@
 import { state } from './gameLogic.js';
-import { isIsland, isBay, cubeToPixel } from './grid.js';
+import { cubeToPixel } from './grid.js';
 import { boardConfig } from './boardconfig.js';
+import { getDOMPieceFromKey, isIsland, isBay, getDOMHexFromKey } from './helpers.js';
 
 export function render() {
     // Clear existing pieces
@@ -33,4 +34,24 @@ export function render() {
         : 'dodgerblue';
     });
   }
+
+// Highlights or de-highlights the actual DOM element of the selected piece
+export function pieceHighlight(turnOn=true, piece=state.selected) {
+  if (turnOn) {
+      getDOMPieceFromKey(piece).style.filter = "brightness(1.5)";
+  }
+  else {
+      getDOMPieceFromKey(piece).style.filter = "brightness(1)";
+  }
+}
+
+// Highlights hex from {q,r} (with or without piece)
+export function hexHighlight(key,turnOn=true) {
+  if (turnOn) {
+    getDOMHexFromKey(key).style.filter = "brightness(1.5)";
+  }
+  else {
+    getDOMHexFromKey(key).style.filter = "brightness(1)";
+  }
+}
   
