@@ -1,7 +1,7 @@
 import { cubeToPixel, hexes } from './grid.js';
 import { render, pieceHighlight, hexHighlight } from './ui.js';
 import { boardConfig } from './boardconfig.js'
-import { getMoves } from './interact.js';
+import { getAllMoves, getMoves } from './interact.js';
 import { getDOMPieceFromKey, isStraightLine, distance, clearLine, shipRange, isIsland, getKeyAsString, hexOnBoard, getDOMHexFromKey } from './helpers.js';
 
 
@@ -14,6 +14,7 @@ export const state = {
 export function handleClick(q, r) {
     const key = `${q},${r}`;
     const piece = state.pieces[key];
+    getAllMoves();
 
     if (piece && piece.owner === state.currentPlayer) { // If clicking on your own piece, it's selected now
 

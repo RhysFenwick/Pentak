@@ -41,7 +41,10 @@ export function clearLine(from, to) {
 }
 
 // Takes either type of qr and returns "q,r" as string
-export function getKeyAsString(q, r) {
+export function getKeyAsString(q, r=null) {
+    if (typeof q == "string") { // Handling the edge case of being passed "q,r" from state.pieces
+        return q;
+    }
     const qrDict = getKeyAsDict(q,r); // Pushes the overloading into that function
     return `${qrDict.q},${qrDict.r}`;
 }
@@ -53,8 +56,14 @@ export function getKeyAsDict(q,r=null) {
     if (r) { // There were two vars passed
         return {q,r};
     }
-    else { // Only one object passed
-        return q;
+    else { // Only one arg passed
+        if (typeof q == "string") {
+            const coords = q.split(","); // Array of two
+            return {q: parseInt(coords[0]), r: parseInt(coords[1])};
+        }
+        else {
+            return q;
+        }
     }
 }
 
