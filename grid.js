@@ -24,7 +24,6 @@ export function createBoard(container, onClick) {
         for (let col = 0; col < gridSize; col++) {
             if (r%2 === 0  || col != gridSize - 1) { // Making the grid pinch in every second row to add symmetry
                 const q = col - ((r - (r & 1)) / 2); // axial q
-                const s = -q - r; // cube s
         
                 const div = document.createElement('div');
                 div.className = 'hex';
@@ -35,9 +34,8 @@ export function createBoard(container, onClick) {
         
                 div.dataset.q = q;
                 div.dataset.r = r;
-                div.dataset.s = s;
         
-                div.onclick = () => onClick(q, r, s);
+                div.onclick = () => onClick({q, r});
                 container.appendChild(div);
                 hexes.push({q,r});
             }

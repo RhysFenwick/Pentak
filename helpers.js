@@ -67,6 +67,13 @@ export function getKeyAsDict(q,r=null) {
     }
 }
 
+// Gets piece object in state from key object if it exists, else null
+export function getPiece(keyObj) {
+    const keyStr = getKeyAsString(keyObj);
+    const piece = state.pieces[keyStr];
+    return piece;
+}
+
 
 export function isIsland(key) {
     return boardConfig.islands.some(pos => getKeyAsString(pos) === key);

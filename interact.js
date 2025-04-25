@@ -40,5 +40,5 @@ export function getAllMoves(player="P2") {
             }
         }
     }
-    console.log(totalMoves);
+    return totalMoves;
 }
