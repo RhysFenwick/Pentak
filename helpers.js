@@ -27,7 +27,7 @@ export function isStraightLine(dq, dr) {
     return dq === 0 || dr === 0 || dq + dr === 0;
 }
 
-export function clearLine(from, to) {
+export function isClearLine(from, to) {
     const dq = to.q - from.q;
     const dr = to.r - from.r;
     const dist = distance(dq, dr);
@@ -81,6 +81,10 @@ export function isIsland(key) {
   
 export function isBay(key) {
     return boardConfig.bays.some(pos => getKeyAsString(pos) === key);
+}
+
+export function isEmpty(key) {
+    return !(getKeyAsString(key) in state.pieces);
 }
 
 // Takes a {q,r} and returns a bool based off if it's a valid hex

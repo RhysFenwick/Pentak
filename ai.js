@@ -16,7 +16,9 @@ export function makeAIMove(mode="random",player="P2") {
             move = opportunistMove();
     }
 
-    tryMove(move.from,move.to);
+    setTimeout(() => { // Delay makes the animations work better
+        tryMove(move.from,move.to);
+    },300);
 }
 
 ////////////////

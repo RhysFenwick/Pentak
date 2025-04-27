@@ -34,6 +34,10 @@ export function createBoard(container, onClick) {
         
                 div.dataset.q = q;
                 div.dataset.r = r;
+
+                if (boardConfig.debug_mode) {
+                    div.innerHTML = `${q},${r}`;
+                }
         
                 div.onclick = () => onClick({q, r});
                 container.appendChild(div);

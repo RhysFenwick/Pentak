@@ -2,7 +2,7 @@ import { cubeToPixel, hexes } from './grid.js';
 import { render, pieceHighlight, hexHighlight } from './ui.js';
 import { boardConfig } from './boardconfig.js'
 import { getAllMoves, getMoves } from './interact.js';
-import { getDOMPieceFromKey, isStraightLine, distance, clearLine, shipRange, isIsland, getKeyAsString, hexOnBoard, getDOMHexFromKey, getPiece } from './helpers.js';
+import { getDOMPieceFromKey, isStraightLine, distance, isClearLine, shipRange, isIsland, getKeyAsString, hexOnBoard, getDOMHexFromKey, getPiece } from './helpers.js';
 import { makeAIMove } from './ai.js';
 
 
@@ -67,18 +67,17 @@ export function isLegalMove(from, to) {
     }
 
     if (dest?.owner === piece.owner || isIsland(keyTo)) return false; // Can't move onto an island or take your own pieces
-    if (!clearLine(from,to)) return false; // Can't move through an island
 
     const dq = to.q - from.q;
     const dr = to.r - from.r;
 
     switch (piece.type) {
         case 'Sloop':
-            return isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Sloop') && dest?.type != 'Brig';
+            return isClearLine(from,to) && isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Sloop') && dest?.type != 'Brig';
         case 'Brig':
-            return distance(dq, dr) === shipRange('Brig');
+            return distance(dq, dr) <= shipRange('Brig');
         case 'Frigate':
-            return isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Frigate');
+            return isClearLine(from,to) && isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Frigate');
         default:
             return false;
     }
@@ -191,7 +190,7 @@ export function initPieces() {
         state.pieces[`${q},${r}`] = { type, owner: 'P2' };
     }
     for (const { q, r, type } of p2Start) {
-        const newR = 8 - r, newQ = 4-q;
+        const newR = boardConfig.size - 1 - r, newQ =  - Math.floor(boardConfig.size/2) + q + r;
         state.pieces[`${newQ},${newR}`] = { type, owner: 'P1' };
     }
 
