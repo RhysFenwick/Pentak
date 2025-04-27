@@ -40,7 +40,7 @@ export function isClearLine(from, to) {
     const stepR = dr / dist;
     for (let i = 1; i < dist; i++) {
         const key = `${from.q + i * stepQ},${from.r + i * stepR}`;
-        if (state.pieces[key] || isIsland(key)) return false;
+        if (state.pieces[key] || isIsland({q: from.q + i * stepQ,r: from.r + i * stepR})) return false;
     }
     return true;
 }
@@ -81,11 +81,11 @@ export function getPiece(keyObj) {
 
 
 export function isIsland(key) {
-    return boardConfig.islands.some(pos => getKeyAsString(pos) === key);
+    return boardConfig.islands.some(pos => keysMatch(key,pos));
 }
   
 export function isBay(key) {
-    return boardConfig.bays.some(pos => getKeyAsString(pos) === key);
+    return boardConfig.bays.some(pos => keysMatch(key,pos));
 }
 
 export function isEmpty(key) {
@@ -105,4 +105,14 @@ export function keysMatch(key1,key2) {
 // Takes a {q,r} and returns a bool based off if it's a valid hex
 export function hexOnBoard(key) {
     return hexes.some(hex => hex.q === key.q && hex.r === key.r);
+}
+
+// Takes an array and returns a random item from it; null if empty
+export function oneOf(arr) {
+    if (arr.length === 0) {
+        return null;
+    }
+    else {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
 }

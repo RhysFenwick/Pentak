@@ -26,7 +26,7 @@ export function render() {
   
     // Also update base hex colours
     document.querySelectorAll('.hex').forEach(hex => {
-      const key = `${hex.dataset.q},${hex.dataset.r}`;
+      const key = {q: parseInt(hex.dataset.q),r: parseInt(hex.dataset.r)};
       hex.style.background = isIsland(key)
         ? 'darkgreen'
         : isBay(key)

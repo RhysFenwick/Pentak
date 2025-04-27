@@ -77,14 +77,14 @@ export function isLegalMove(from, to) {
         return false;
     }
 
-    if (dest?.owner === piece.owner || isIsland(keyTo)) return false; // Can't move onto an island or take your own pieces
+    if (dest?.owner === piece.owner || isIsland(to)) return false; // Can't move onto an island or take your own pieces
 
     const dq = to.q - from.q;
     const dr = to.r - from.r;
 
     switch (piece.type) {
         case 'Sloop':
-            return isClearLine(from,to) && isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Sloop') && dest?.type != 'Brig';
+            return isClearLine(from,to) && isStraightLine(dq, dr) && distance(dq, dr) <= shipRange('Sloop');
         case 'Brig':
             return distance(dq, dr) <= shipRange('Brig');
         case 'Frigate':
@@ -141,33 +141,16 @@ function pieceTaken(key) {
   
 
 function endTurn() {
-    // Check if the current player has won
-    // Check if 3 bays occupied
-    var baycount = 0 // If +/-3, a winner
-    const isleWinCount = 3;
-    const pieceCoords = Object.keys(state.pieces);
+    // Check if either party is fully out of the bays
+    const owners = new Set(); // Add P1 and P2 then check for absence
     for (const bay of boardConfig.bays) {
-        const bayKey = `${bay.q},${bay.r}`;
-        if (pieceCoords.includes(bayKey)) {
-            if (state.pieces[bayKey].owner === "P1") baycount += 1;
-            else if (state.pieces[bayKey].owner === "P2") baycount -= 1;
+        const bayStr = getKeyAsString(bay);
+        if (state.pieces[bayStr]) {
+            owners.add(state.pieces[bayStr].owner);
         }
     }
 
-    if (baycount >= isleWinCount) {
-        endGame("P1");
-        return;
-    }
-    else if (baycount <= -isleWinCount) {
-        endGame("P2");
-        return;
-    }
-
     // Check if one side wiped out
-    const owners = new Set();
-    for (const piece in state.pieces) {
-        owners.add(state.pieces[piece].owner);
-    }
     if (!owners.has("P1")) {
         endGame("P2");
         return;

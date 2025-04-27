@@ -1,6 +1,6 @@
 import { getAllMoves } from "./interact.js";
 import { tryMove } from "./gameLogic.js";
-import { getPiece } from "./helpers.js";
+import { getPiece, isBay, isIsland, oneOf } from "./helpers.js";
 
 // This file contains the AIs that can play the game via interact.js
 // They're each a function that takes a player string and returns a move of form from{q,r}, to{q,r}
@@ -36,16 +36,41 @@ export function randomMove(player="P2") {
     return rando;
 }
 
-// P2 takes piece if it can, otherwise random
+// P2 takes piece if it can, otherwise moves to bay if it can, otherwise moves forward if it can, otherwise random
 export function opportunistMove(player="P2") {
     const moves = getAllMoves(player);
     const rival = (player == "P2") ? "P1" : "P2";
+
+    // First look for vulnerable pieces...
     for (const move of moves) {
         if (getPiece(move.to) && getPiece(move.to).owner == rival) { // Owned by the other team!
             return move;
         }
     }
-    return moves[Math.floor(Math.random() * moves.length)]; // If all else fails, go random
+
+    // ...Then look for bays (excluding pieces already in one)...
+    let bay_moves = [];
+    for (const move of moves) {
+        if (isBay(move.to) && !isBay(move.from)) { // Is an unoccupied bay
+            bay_moves.push(move);
+        }
+    }
+    if (bay_moves.length > 0) {
+        return oneOf(bay_moves); // Moves forward a piece at random if it can
+    }
+
+    // ... Then tries to move forward a random non-bay piece...
+    let forward_moves = [];
+    for (const move of moves) {
+        if (move.to.r > move.from.r && !isBay(move.from)) {
+            forward_moves.push(move);
+        }
+    }
+    if (forward_moves.length > 0) {
+        return oneOf(forward_moves); // Moves forward a piece at random if it can
+    }
+
+    return oneOf(moves); // If all else fails, go random
 
 }
 

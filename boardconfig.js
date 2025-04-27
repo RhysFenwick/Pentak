@@ -14,6 +14,8 @@ export const boardConfig = {
       { q: -1, r: 7 },
       { q: 3, r: 4 },
       { q: 2, r: 6 },
+      { q: 4, r: 2 },
+      { q: 1, r: 8 },
     ],
   
     bays: [
@@ -27,14 +29,18 @@ export const boardConfig = {
       { q: 0, r: 6 },
       { q: 2, r: 5 },
       { q: 3, r: 5 },
+      { q: 3, r: 3 },
+      { q: 4, r: 3 },
+      { q: 1, r: 7 },
+      { q: 2, r: 7 },
     ],
   
     initialShips: [
       { q: -1, r: 3, type: 'Brig' },
       { q: 8, r: 3, type: 'Brig' },
       { q: 1, r: 2, type: 'Sloop' },
-      { q: 3, r: 2, type: 'Sloop' },
-      { q: 5, r: 2, type: 'Sloop' },
+      { q: 3, r: 3, type: 'Sloop' },
+      { q: 4, r: 3, type: 'Sloop' },
       { q: 7, r: 2, type: 'Sloop' },
       { q: 2, r: 0, type: 'Sloop' },
       { q: 8, r: 0, type: 'Sloop' },
