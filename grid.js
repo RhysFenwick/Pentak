@@ -6,10 +6,10 @@ export const hexes = []; // Will fill up with {q,r} of all hexes on the board
 
 
 export function cubeToPixel(q, r, isPiece) {
-    const size = 36; // TODO: Pull out to reference elsewhere
+    const size = 30; // TODO: Pull out to reference elsewhere
     const boardMargin = 10; // Pixel margin before closest hex
-    const infoMargin = 30; // Height of info at the top
-    let x = size * (Math.sqrt(3) * q + r * (Math.sqrt(3) / 2)) + boardMargin;
+    const infoMargin = 80; // Height of info at the top
+    let x = size * (Math.sqrt(3) * q + r * (Math.sqrt(3) / 2)) + boardMargin + 50;
     let y = size * 1.5 * r + boardMargin + infoMargin - Math.floor(r/2)- Math.floor(r/7) + Math.min(1,Math.max(0,1-r)); // Monstrosity at the end to compensate for weird pixel effects
     if (isPiece) {
         x += size/6;

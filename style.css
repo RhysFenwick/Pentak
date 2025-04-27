@@ -18,16 +18,16 @@ h2 {
 
 #board {
     position: relative;
-    width: 1000px;
-    height: 800px;
+    width: fit-content;
+    height: fit-content;
     margin: 10px;
     background-color: saddlebrown;
     border: 10px solid slategrey;
 }
 
 .hex {
-    width: 60px;
-    height: 69px; /* ≈ sqrt(3)/2 * width * 2 */
+    width: 50px;
+    height: 57px; /* ≈ sqrt(3)/2 * width * 2 */
     background: lightblue;
     clip-path: polygon(
         50% 0%,
@@ -54,11 +54,11 @@ h2 {
 
 .piece {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     font-size: 24px;
     text-align: center;
-    line-height: 50px;
+    line-height: 40px;
     border-radius: 50%;
     transition: left 0.3s ease, top 0.3s ease;
     color: white;
