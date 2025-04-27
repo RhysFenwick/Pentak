@@ -2,7 +2,7 @@ import { cubeToPixel, hexes } from './grid.js';
 import { render, pieceHighlight, hexHighlight } from './ui.js';
 import { boardConfig } from './boardconfig.js'
 import { getAllMoves, getMoves } from './interact.js';
-import { getDOMPieceFromKey, isStraightLine, distance, isClearLine, shipRange, isIsland, getKeyAsString, hexOnBoard, getDOMHexFromKey, getPiece } from './helpers.js';
+import { getDOMPieceFromKey, isStraightLine, distance, isClearLine, shipRange, isIsland, getKeyAsString, hexOnBoard, getDOMHexFromKey, getPiece, keysMatch } from './helpers.js';
 import { makeAIMove } from './ai.js';
 
 
@@ -16,30 +16,41 @@ export const state = {
 export function handleClick(key) {
     const piece = getPiece(key);
 
-    if (piece && piece.owner === state.currentPlayer) { // If clicking on your own piece, it's selected now
+    if (piece && piece.owner === state.currentPlayer) { // If clicking on your own piece...
 
         if (state.selected) { // De-highlight previously selected piece if there is one
             pieceHighlight(false);
         }
-        
-        state.selected = key; // Make clicked-on piece the new selected one
-        const poss_moves = getMoves(state.selected);
-        for (const hex of hexes) {
-            if (poss_moves.some(poss => hex.q === poss.q && hex.r === poss.r)) { // For each hex on the board, see if it's a possible move...
-                hexHighlight(hex); // ...Then highlight any that are a match...
-            }
-            else {
-                hexHighlight(hex,false); // ...And turn off any that aren't a match
+
+        if (keysMatch(state.selected,key)) { // Clicked on the same piece again
+            state.selected = null; // Deselect
+            for (const hex of hexes) {
+                hexHighlight(hex, false); // De-highlight all pieces
             }
         }
-        // Highlight newly selected piece
-        pieceHighlight();
+        else {
+            state.selected = key; // Make clicked-on piece the new selected one
+            const poss_moves = getMoves(state.selected);
+            for (const hex of hexes) {
+                if (poss_moves.some(poss => hex.q === poss.q && hex.r === poss.r)) { // For each hex on the board, see if it's a possible move...
+                    hexHighlight(hex); // ...Then highlight any that are a match...
+                }
+                else {
+                    hexHighlight(hex,false); // ...And turn off any that aren't a match
+                }
+            }
+            // Highlight newly selected piece
+            pieceHighlight();
+        }
     }
 
     else if (state.selected) { // If there's already a piece selected, check if you've clicked on a legal move
         if (!tryMove(state.selected, key)) { // Tries to make the move - inside will trigger on failure
             pieceHighlight(false);
             state.selected = null; // Deselect
+            for (const hex of hexes) {
+                hexHighlight(hex, false); // De-highlight all pieces
+            }
         }
     } 
 }

@@ -30,14 +30,12 @@ export const boardConfig = {
     ],
   
     initialShips: [
-      { q: 1, r: 4, type: 'Brig' },
-      { q: 5, r: 4, type: 'Brig' },
-      { q: -1, r: 2, type: 'Sloop' },
+      { q: -1, r: 3, type: 'Brig' },
+      { q: 8, r: 3, type: 'Brig' },
       { q: 1, r: 2, type: 'Sloop' },
       { q: 3, r: 2, type: 'Sloop' },
       { q: 5, r: 2, type: 'Sloop' },
       { q: 7, r: 2, type: 'Sloop' },
-      { q: 9, r: 2, type: 'Sloop' },
       { q: 2, r: 0, type: 'Sloop' },
       { q: 8, r: 0, type: 'Sloop' },
       { q: 5, r: 0, type: 'Frigate' },

@@ -4,6 +4,8 @@ import { hexes } from "./grid.js";
 
 
 // Point of this file is to store utility functions outside the main files to declutter.
+// Assume everything in this is an export function.
+// Where possible, keys should be {q:q, r:r}.
 
 // Get the actual DOM element from {q,r}
 export function getDOMPieceFromKey(key) {
@@ -14,6 +16,9 @@ export function getDOMPieceFromKey(key) {
 export function getDOMHexFromKey(key) {
     return document.querySelector(`.hex[data-q="${key.q}"][data-r="${key.r}"]`);
 }
+
+// The relative q,r values of each hex's six neighbours
+export const hexDeltas = [[1,0],[-1,0],[0,-1],[0,1],[1,-1],[-1,1]];
 
 export function shipRange(type) {
     return boardConfig.shipTypes[type].moves
@@ -85,6 +90,16 @@ export function isBay(key) {
 
 export function isEmpty(key) {
     return !(getKeyAsString(key) in state.pieces);
+}
+
+// Returns a bool if keys are the same by value, not just by reference
+export function keysMatch(key1,key2) {
+    try {
+        return(key1.q === key2.q && key1.r === key2.r);
+    }
+    catch(err) {
+        return false;
+    }
 }
 
 // Takes a {q,r} and returns a bool based off if it's a valid hex

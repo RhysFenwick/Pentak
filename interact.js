@@ -1,6 +1,6 @@
 import { state, isLegalMove } from './gameLogic.js'
 import { boardConfig } from './boardconfig.js'
-import { getKeyAsDict, getKeyAsString, isEmpty, shipRange } from './helpers.js';
+import { getKeyAsDict, getKeyAsString, hexDeltas, isEmpty, shipRange } from './helpers.js';
 import { hexes } from './grid.js';
 
 // Point of this file is to provide a simple interface for interacting with a game that's been set up
@@ -18,12 +18,9 @@ export function getMoves(miscKey) {
     // Cycle through each direction in each range if that's the movement type
     if (boardConfig.shipTypes[piece.type].straight_line_only) {
         for (let i=1; i<=range; i++) {
-            inRange.push({q: key.q + i, r: key.r});
-            inRange.push({q: key.q - i, r: key.r});
-            inRange.push({q: key.q, r: key.r + i});
-            inRange.push({q: key.q, r: key.r - i});
-            inRange.push({q: key.q + i, r: key.r-i});
-            inRange.push({q: key.q - i, r: key.r+i});
+            for (const delta of hexDeltas) {
+                inRange.push({q: key.q + delta[0]*i, r: key.r + delta[1]*i});
+            }
         }
         validMoves = inRange.filter(to => isLegalMove(key, to));
     }
@@ -38,13 +35,10 @@ export function getMoves(miscKey) {
         for (let i=1; i<=range; i++) { // Repeat for each layer
             let current_layer = new Set(); // Temporary (pre-legality-filter) set
             const last_layer = move_layers[move_layers.length-1]; // The set (previous layer) being compared to
-            for (const coord of last_layer) { // Add the six neighbouring hexes (minus duplicates. because set)
-                current_layer.add([coord[0],coord[1]+1]);
-                current_layer.add([coord[0],coord[1]-1]);
-                current_layer.add([coord[0]+1,coord[1]]);
-                current_layer.add([coord[0]-1,coord[1]]);
-                current_layer.add([coord[0]+1,coord[1]-1]);
-                current_layer.add([coord[0]-1,coord[1]+1]);
+            for (const coord of last_layer) { // Add the six neighbouring hexes (minus duplicates, because set)
+                for (const delta of hexDeltas) {
+                    current_layer.add([coord[0] + delta[0],coord[1]+delta[1]]);
+                }
             }
 
             // Now filter out any that aren't legal moves and add to validMoves
