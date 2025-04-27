@@ -3,7 +3,7 @@
 export const boardConfig = {
     size: 11,
     
-    debug_mode: true,
+    debug_mode: false,
   
     islands: [
       { q: 6, r: 3 },
@@ -59,7 +59,7 @@ export const boardConfig = {
         "straight_line_only": false,
       },
       "Sloop": {
-        "symbol":"⚜",
+        "symbol":"⛬",
         "moves":3,
         "straight_line_only": true,
       }

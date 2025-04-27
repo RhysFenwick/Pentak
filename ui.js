@@ -14,7 +14,7 @@ export function render() {
   
       const el = document.createElement('div');
       el.className = 'piece';
-      el.innerHTML = boardConfig.shipTypes[piece.type].symbol;
+      el.innerHTML = `<h2>${boardConfig.shipTypes[piece.type].symbol}</h2>`;
       el.style.textAlign = "center";
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;

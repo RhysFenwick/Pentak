@@ -12,6 +12,10 @@ h1 {
     margin: 5px;
 }
 
+h2 {
+    margin-top: 0px;
+}
+
 #board {
     position: relative;
     width: 1000px;
